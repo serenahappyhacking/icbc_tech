@@ -7,10 +7,10 @@ const resolve = dir => path.posix.join(__dirname, '..', dir)
 
 module.exports = {
   // 入口暂定客户端入口，服务端配置需要更改它
-  entry: path.join(__dirname, '..', 'src/entry-client.js'),
+  entry: path.join(__dirname, '../src/entry-client.js'),
   // 生成文件路径、名字、引入公共路径
   output: {
-    path: path.join(__dirname, '..', 'dist'),
+    path: path.join(__dirname, '../dist'),
     filename: '[name].js',
     publicPath: '/'
   },
