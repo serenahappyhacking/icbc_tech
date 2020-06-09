@@ -1,0 +1,63 @@
+{
+  "name": "icbcfe_ssr_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.conf.js",
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.conf.js",
+    "build": "npm run build:server && npm run build:client"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "koa": "2.5.3",
+    "koa-router": "7.4.0",
+    "vue": "^2.6.11",
+    "vue-router": "^3.3.2",
+    "vue-server-renderer": "^2.6.11",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "babel-loader": "^8.1.0",
+    "cross-env": "6.0.3",
+    "css-loader": "^3.5.3",
+    "koa-send": "^5.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "style-loader": "^1.2.1",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "url-loader": "^4.1.0",
+    "vue-loader": "^15.9.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
