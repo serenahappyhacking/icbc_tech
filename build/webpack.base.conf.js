@@ -5,9 +5,10 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 // 用于返回文件相对于根目录的绝对路径
 const resolve = dir => path.posix.join(__dirname, '..', dir)
 
+// 定义是否是生产环境的标志位，用于配置中
+const isProd = process.env.NODE_ENV === 'production'
+
 module.exports = {
-  // 入口暂定客户端入口，服务端配置需要更改它
-  entry: path.join(__dirname, '../src/entry-client.js'),
   // 生成文件路径、名字、引入公共路径
   output: {
     path: path.join(__dirname, '../dist'),
@@ -23,6 +24,9 @@ module.exports = {
       'assets': resolve('src/assets')
     }
   },
+  devtool: isProd
+    ? false
+    : 'cheap-module-eval-source-map',
   module: {
     rules: [
       {

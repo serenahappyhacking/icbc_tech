@@ -8,7 +8,7 @@ const VueServerPlugin = require('vue-server-renderer/server-plugin')
 module.exports = merge(baseWebpackConfig, {
   mode: 'production',
   target: 'node',
-  devtool: 'source-map',
+  devtool: '#source-map',
   entry: path.join(__dirname, '../src/entry-server.js'),
   output: {
     libraryTarget: 'commonjs2',
