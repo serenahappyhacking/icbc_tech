@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { getItemData } from '../api'
 export default {
   name: 'Detail',
   data () {
@@ -15,7 +16,9 @@ export default {
   // 定义asyncData， entry-server.js会编译所有匹配的组件中是否包含，包含则执行
   // 将state值挂在到context上，会被序列化为window.__INITIAL_STATE__
   asyncData ({ store, route }) {
-    return store.commit('SET_ITEM', { 'text': 123 })
+    return getItemData().then(res => {
+      store.commit('SET_ITEM', res)
+    })
   },
 }
 </script>

@@ -12,24 +12,11 @@ export default function createStore() {
       SET_ITEM_FUNC (state, item) {
         state.item = item
       }
-      // fetchMovie({ commit }, id) {
-      //   return new Promise((resolve, reject) => {
-      //     setTimeout(() => {
-      //       resolve({ id })
-      //     }, 10)
-      //   }).then(res => {
-      //     commit('setMovie', { res })
-      //   })
-      // }
-
     },
     mutations: {
       SET_ITEM: (state, item) => {
         state.item = item
       }
-      // setMovie(state, { res }) {
-      //   state.movie = res
-      // }
     },
     getters: {
       GET_ITEM: (state) => {
