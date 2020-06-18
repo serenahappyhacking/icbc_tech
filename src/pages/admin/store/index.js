@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default function createStore() {
+export function createStore() {
   return new Vuex.Store({
     state: {
       item: {}

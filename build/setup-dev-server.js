@@ -3,45 +3,57 @@ const path = require('path')
 // memory-fs可以使webpack将文件写入到内存中，而不是写入到磁盘。
 const MFS = require('memory-fs')
 const webpack = require('webpack')
-const clientConfig = require('./webpack.client.conf')
-const serverConfig = require('./webpack.server.conf')
+const clientConfigs = require('./webpack.client.conf')
+const serverConfigs = require('./webpack.server.conf')
 // webpack热加载需要
 const webpackDevMiddleware = require('koa-webpack-dev-middleware')
 // 配合热加载实现模块热替换
 const webpackHotMiddleware = require('koa-webpack-hot-middleware')
 
-const opn = require('opn')
+// const opn = require('opn')
 
-// 读取vue-ssr-webpack-plugin生成的文件
-const readFile = (fs, file) => {
-  try {
-    return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8')
-  } catch (e) {
-    console.log('读取文件错误：', e)
-  }
-}
-
-module.exports = function setupDevServer(app, templatePath, cb) {
+module.exports = function setupDevServer(moduleName, app, templatePath, cb) {
   let bundle
   let template
   let clientManifest
 
+  // let ready
+  // const readyPromise = new Promise(r => {
+  //   ready = r
+  // })
   // 监听改变后更新函数
   const update = () => {
     if (bundle && clientManifest) {
+      // ready()
       cb(bundle, template,clientManifest)
     }
   }
 
+  // 读取文件
+  const readFile = (fs, file) => {
+    try {
+      return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8')
+    } catch (e) {
+      console.log('读取文件错误：', e)
+    }
+  }
+
+  const clientConfig = clientConfigs.find(item => item.name === moduleName);
+  const serverConfig = serverConfigs.find(item => item.name === moduleName);
+
+  clientConfig.mode = "development";
+  serverConfig.mode = "development";
+
   // 读取模板并观察变化
   template = fs.readFileSync(templatePath, 'utf-8')
   // 修改webpack配合模块热替换使用
-  clientConfig.entry.app = ['webpack-hot-middleware/client', clientConfig.entry.app]
+  clientConfig.entry.app = ["webpack-hot-middleware/client?path=/__webpack_hmr_" + moduleName, clientConfig.entry.app]
   clientConfig.output.filename = '[name].js'
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
+  clientConfig.output.publicPath = `/dist/${moduleName}`;
 
   // dev中间件
   const clientCompiler = webpack(clientConfig)
@@ -64,7 +76,10 @@ module.exports = function setupDevServer(app, templatePath, cb) {
   })
 
   // 插入Koa中间件(模块热替换)
-  app.use(webpackHotMiddleware(clientCompiler))
+  app.use(webpackHotMiddleware(clientCompiler,{
+    path: "/__webpack_hmr_" + moduleName,
+    heartbeat: 5000
+  }))
 
   const serverCompiler = webpack(serverConfig)
   const mfs = new MFS()
@@ -79,8 +94,9 @@ module.exports = function setupDevServer(app, templatePath, cb) {
     update()
   })
 
-  devMiddleware.waitUntilValid(() => {
-    console.log('\n> Listening at http://localhost:3000' + '' + '\n')
-    opn('http://localhost:3000/');
-  })
+  // devMiddleware.waitUntilValid(() => {
+  //   console.log('\n> Listening at http://localhost:3000' + '' + '\n')
+  //   opn('http://localhost:3000/');
+  // })
+  // return readyPromise;
 }
