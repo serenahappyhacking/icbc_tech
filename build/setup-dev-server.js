@@ -17,14 +17,9 @@ module.exports = function setupDevServer(moduleName, app, templatePath, cb) {
   let template
   let clientManifest
 
-  // let ready
-  // const readyPromise = new Promise(r => {
-  //   ready = r
-  // })
   // 监听改变后更新函数
   const update = () => {
     if (bundle && clientManifest) {
-      // ready()
       cb(bundle, template,clientManifest)
     }
   }
@@ -98,5 +93,4 @@ module.exports = function setupDevServer(moduleName, app, templatePath, cb) {
   //   console.log('\n> Listening at http://localhost:3000' + '' + '\n')
   //   opn('http://localhost:3000/');
   // })
-  // return readyPromise;
 }
